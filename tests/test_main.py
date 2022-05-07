@@ -32,3 +32,13 @@ def test_episode_render():
         action = env.action_space.sample()
         _, _, done, _ = env.step(action)
         env.render()
+
+def test_bad_actions():
+
+    env = gym.make("Navigation-v0")
+
+    bad_actions = [-1, 1.5, 4]
+
+    for a in bad_actions:
+        with pytest.raises(Exception):
+            env.step(a)
