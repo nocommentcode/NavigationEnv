@@ -5,6 +5,9 @@ The agent (white dot) must navigate to the reward region (green) without hitting
 terminate at the arrival to the red or green zones, or after a set amount of steps. Initial state will be somewhere in the
 bottom right region of the board - the exact position is random. All transitions are deterministic (for now).
 
+Observation space: 3 width x height channels, where channel one contains the position of the ball, channel 2 contains a reward
+map, and channel 3 shows the location of all terminal states.
+
 ![An image of the environment](media/navigation.png)
 
 ## Installation
@@ -31,3 +34,6 @@ while not done:
     state, reward, done, info = env.step(action)
     env.render()
 ```
+
+## TODO
+- Create "Navigation-v1" where state space is pixel RGB instead of feature maps
