@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: navigation
+Version: 0.0.1
+Summary: Navigation Environment
+Home-page: https://github.com/will-maclean/NavigationEnv
+Author: Will Maclean
+Author-email: wmac0001@student.monash.edu
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/will-maclean/NavigationEnv/issues
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+Navigation Environment for Gym
+
+
