@@ -35,5 +35,14 @@ while not done:
     env.render()
 ```
 
+## Environments
+*Navigation-v0*
+
+Navigation-v0 is the standard environment. All rewards and terminal states are turned on.
+
+*NavigationNoTerminals-v0*
+
+NavigationNoTerminals-v0 is the same as Navigation-v0, except there are no terminal transitions. This means that all episodes will continue until the maximum episode length. Useful if only interested in learning transitions.
+
 ## TODO
 - Create "Navigation-v1" where state space is pixel RGB instead of feature maps
