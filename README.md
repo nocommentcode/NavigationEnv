@@ -36,13 +36,21 @@ while not done:
 ```
 
 ## Environments
-*Navigation-v0*
+*Navigation-vx*
 
-Navigation-v0 is the standard environment. All rewards and terminal states are turned on.
+Navigation-vx is the standard environment. All rewards and terminal states are turned on.
 
-*NavigationNoTerminals-v0*
+*NavigationNoTerminals-vx*
 
-NavigationNoTerminals-v0 is the same as Navigation-v0, except there are no terminal transitions. This means that all episodes will continue until the maximum episode length. Useful if only interested in learning transitions.
+NavigationNoTerminals-vx is the same as Navigation-vx, except there are no terminal transitions. This means that all episodes will continue until the maximum episode length. Useful if only interested in learning transitions.
+
+*v0*
+
+Board is 10x10
+
+*v1*
+
+Board is 20x20
 
 ## TODO
-- Create "Navigation-v1" where state space is pixel RGB instead of feature maps
+- Create version where state space is pixel RGB instead of feature maps

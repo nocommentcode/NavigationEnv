@@ -5,21 +5,21 @@ import matplotlib.pyplot as plt
 class NavigationEnv(gym.Env):
     metadata = {"render.modes": ["human", "array"]}
 
-    def __init__(self, use_terminals=False, spawn_radius=2, max_ep_len=100):
+    def __init__(self, use_terminals=False, spawn_radius=2, max_ep_len=100, map_size=20):
         super().__init__()
-        self.w = 20
-        self.h = 20
+        self.w = map_size
+        self.h = map_size
 
         # create reward map
         self.rewards = np.zeros((self.h, self.w))
-        self.rewards[:8, :10] = 1
-        self.rewards[8:16, :10] = -1
+        self.rewards[:map_size//4, :map_size//2] = 1
+        self.rewards[map_size//4:map_size//2, :map_size//2] = -1
 
         self.timestep_penalty = 0.01
 
         # create terminal map
         self.terminals = np.zeros((self.h, self.w))
-        self.terminals[:16, :10] = use_terminals
+        self.terminals[:map_size//2, :map_size//2] = use_terminals
 
         self.max_ep_len = max_ep_len
         self.current_ep_len = 0
@@ -27,7 +27,7 @@ class NavigationEnv(gym.Env):
 
         self.player = None
         self.player_map = np.zeros((self.h, self.w))
-        self.spawn_center = (17, 17)
+        self.spawn_center = (3 * map_size//2, 3 * map_size//2)
         self.spawn_radius = spawn_radius
 
         # channel 1: player location

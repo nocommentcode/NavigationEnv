@@ -2,7 +2,7 @@ import gym
 import navigation
 import pytest
 
-env_names = ["Navigation-v0", "NavigationNoTerminals-v0"]
+env_names = ["Navigation-v0", "Navigation-v1", "NavigationNoTerminals-v0", "NavigationNoTerminals-v1"]
 
 @pytest.mark.parametrize("env_name", env_names)
 def test_make(env_name):
