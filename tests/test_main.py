@@ -16,6 +16,8 @@ def test_render(env_name):
 
     env.render()
 
+    env.close()
+
 @pytest.mark.parametrize("env_name", env_names)
 def test_episode_no_render(env_name):
     env = gym.make(env_name)
@@ -26,6 +28,8 @@ def test_episode_no_render(env_name):
     while not done:
         action = env.action_space.sample()
         _, _, done, _ = env.step(action)
+    
+    env.close()
 
 @pytest.mark.parametrize("env_name", env_names)
 def test_episode_render(env_name):
@@ -38,6 +42,8 @@ def test_episode_render(env_name):
         action = env.action_space.sample()
         _, _, done, _ = env.step(action)
         env.render()
+    
+    env.close()
 
 @pytest.mark.parametrize("env_name", env_names)
 def test_bad_actions(env_name):
@@ -49,3 +55,5 @@ def test_bad_actions(env_name):
     for a in bad_actions:
         with pytest.raises(Exception):
             env.step(a)
+    
+    env.close()
