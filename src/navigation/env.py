@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 class NavigationEnv(gym.Env):
     metadata = {"render.modes": ["human", "array"]}
 
-    def __init__(self):
+    def __init__(self, use_terminals=False, spawn_radius=2, max_ep_len=100):
         super().__init__()
         self.w = 20
         self.h = 20
@@ -19,16 +19,16 @@ class NavigationEnv(gym.Env):
 
         # create terminal map
         self.terminals = np.zeros((self.h, self.w))
-        self.terminals[:16, :10] = 1
+        self.terminals[:16, :10] = use_terminals
 
-        self.max_ep_len = 100
+        self.max_ep_len = max_ep_len
         self.current_ep_len = 0
         self.ep_return = 0
 
         self.player = None
         self.player_map = np.zeros((self.h, self.w))
         self.spawn_center = (17, 17)
-        self.spawn_radius = 2
+        self.spawn_radius = spawn_radius
 
         # channel 1: player location
         # channel 2: terminal map
@@ -110,8 +110,8 @@ class NavigationEnv(gym.Env):
                     # rewards
                     pixels[x, y] = np.array([0, 255, 0])  # green
 
-                elif state[2, x, y] == 1:
-                    # terminal
+                elif state[1, x, y] == -1:
+                    # bad reward
                     pixels[x, y, 0] = 255  # red
         
         if mode == "human":
@@ -138,4 +138,8 @@ class NavigationEnv(gym.Env):
     def close_display(self):
         plt.close()
         self.closed = True
+    
+    def close(self):
+        super().close()
+        self.close_display()
 

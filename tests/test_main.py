@@ -2,18 +2,23 @@ import gym
 import navigation
 import pytest
 
-def test_make():
-    gym.make("Navigation-v0")
+env_names = ["Navigation-v0", "NavigationNoTerminals-v0"]
 
-def test_render():
-    env = gym.make("Navigation-v0")
+@pytest.mark.parametrize("env_name", env_names)
+def test_make(env_name):
+    gym.make(env_name)
+
+@pytest.mark.parametrize("env_name", env_names)
+def test_render(env_name):
+    env = gym.make(env_name)
 
     _ = env.reset()
 
     env.render()
 
-def test_episode_no_render():
-    env = gym.make("Navigation-v0")
+@pytest.mark.parametrize("env_name", env_names)
+def test_episode_no_render(env_name):
+    env = gym.make(env_name)
 
     _ = env.reset()
     done = False
@@ -22,8 +27,9 @@ def test_episode_no_render():
         action = env.action_space.sample()
         _, _, done, _ = env.step(action)
 
-def test_episode_render():
-    env = gym.make("Navigation-v0")
+@pytest.mark.parametrize("env_name", env_names)
+def test_episode_render(env_name):
+    env = gym.make(env_name)
 
     _ = env.reset()
     done = False
@@ -33,9 +39,10 @@ def test_episode_render():
         _, _, done, _ = env.step(action)
         env.render()
 
-def test_bad_actions():
+@pytest.mark.parametrize("env_name", env_names)
+def test_bad_actions(env_name):
 
-    env = gym.make("Navigation-v0")
+    env = gym.make(env_name)
 
     bad_actions = [-1, 1.5, 4]
 
