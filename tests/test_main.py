@@ -79,7 +79,7 @@ def test_terminations(env_name):
     env.unwrapped.player_map = np.zeros((env.unwrapped.h, env.unwrapped.w))
     env.unwrapped.player_map[env.unwrapped.player[0], env.unwrapped.player[1]] = 1
 
-    _, r, d, _ = env.step(3)  # step left into reward
+    _, r, d, _ = env.step(np.array([0, -1]).astype("float32"))  # step left into reward
 
     assert r == 1 - 0.01, "Incorrect reward from goal region"
     assert d == 1, "incorrect done signal from goal region"
@@ -91,7 +91,7 @@ def test_terminations(env_name):
     env.unwrapped.player_map = np.zeros((env.unwrapped.h, env.unwrapped.w))
     env.unwrapped.player_map[env.unwrapped.player[0], env.unwrapped.player[1]] = 1
 
-    _, r, d, _ = env.step(3)  # step left into reward
+    _, r, d, _ = env.step(np.array([0, -1]).astype("float32"))  # step left into reward
 
     assert r == -1 - 0.01, "Incorrect reward from death region"
     assert d == 1, "incorrect done signal from death region"
@@ -116,7 +116,7 @@ def test_non_terminal_transition_reward(env_name):
     env.unwrapped.player_map = np.zeros((env.unwrapped.h, env.unwrapped.w))
     env.unwrapped.player_map[env.unwrapped.player[0], env.unwrapped.player[1]] = 1
 
-    _, r, d, _ = env.step(0)  # step up - non terminal transition
+    _, r, d, _ = env.step(np.array([-1.0, 0.0]).astype("float32"))  # step up - non terminal transition
 
     assert r == -0.01, "Incorrect reward from goal region"
     assert d == 0, "incorrect done signal from goal region"

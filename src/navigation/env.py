@@ -35,7 +35,7 @@ class NavigationEnv(gym.Env):
         # channel 3: reward map
         self.observation_space = gym.spaces.Box(0.0, 1.0, shape=(3, self.h, self.w))
 
-        self.action_space = gym.spaces.Box(-1.0, 1, shape=(2,))
+        self.action_space = gym.spaces.Box(-1.0, 1.0, shape=(2,))
 
         # Visualisation stuff
         self.visualized = False
@@ -58,10 +58,9 @@ class NavigationEnv(gym.Env):
         return self._obs()
     
     def step(self, action):
+        assert self.action_space.contains(action)
         
         action = np.rint(action) # discretise actions
-
-        assert self.action_space.contains(action)
 
         action = action.astype("int") 
 
