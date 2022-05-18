@@ -1,4 +1,5 @@
 import gym
+import numpy as np
 import navigation
 import pytest
 
@@ -50,7 +51,7 @@ def test_bad_actions(env_name):
 
     env = gym.make(env_name)
 
-    bad_actions = [-1, 1.5, 4]
+    bad_actions = [np.array([-2, -2]), np.array([-3, 0]), np.array(0), [0, 0]]
 
     for a in bad_actions:
         with pytest.raises(Exception):

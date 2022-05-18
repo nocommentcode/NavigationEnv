@@ -35,8 +35,7 @@ class NavigationEnv(gym.Env):
         # channel 3: reward map
         self.observation_space = gym.spaces.Box(0.0, 1.0, shape=(3, self.h, self.w))
 
-        # N, E, S, W
-        self.action_space = gym.spaces.Discrete(4)
+        self.action_space = gym.spaces.Box(-1.0, 1, shape=(2,))
 
         # Visualisation stuff
         self.visualized = False
@@ -56,7 +55,12 @@ class NavigationEnv(gym.Env):
         return self._obs()
     
     def step(self, action):
+        
+        action = np.rint(action) # discretise actions
+
         assert self.action_space.contains(action)
+
+        action = action.astype("int") 
 
         self.current_ep_len += 1
     
@@ -66,18 +70,7 @@ class NavigationEnv(gym.Env):
             'ep_return': self.ep_return,
         }
 
-        if action == 0:
-            # N
-            self.player[0] -= 1
-        elif action == 1:
-            # E
-            self.player[1] += 1
-        elif action == 2:
-            # S
-            self.player[0] += 1
-        elif action == 3:
-            # W
-            self.player[1] -= 1
+        self.player += action
 
         # Clip to ensure the player stays on the board
         self.player[0] = np.clip(self.player[0], 0, self.h - 1)
