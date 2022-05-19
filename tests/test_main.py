@@ -123,3 +123,28 @@ def test_non_terminal_transition_reward(env_name):
     
     
     env.close()
+
+@pytest.mark.parametrize("env_name", env_names)
+def test_action_sensible(env_name):
+    # ensures that we get correct termination and reward signals from terminal transitions
+    # Uses some gross hacking - will break if the environment is changed too much
+
+    env = gym.make(env_name)
+
+    _ = env.reset()
+    
+    # goal state
+    env.unwrapped.player = np.array([env.unwrapped.h - 1, env.unwrapped.w - 1])  # top corner
+    player_pre = env.unwrapped.player
+    env.unwrapped.player_map = np.zeros((env.unwrapped.h, env.unwrapped.w))
+    env.unwrapped.player_map[env.unwrapped.player[0], env.unwrapped.player[1]] = 1
+
+    a = np.array([-1, 0]).astype("float32")  # left
+
+    s_, r, d, _ = env.step(a)  # step up - non terminal transition
+    
+    player_post = env.unwrapped.player
+
+    assert np.logical_and((player_pre + a), player_post).all(), "actions don't make sense"
+    
+    env.close()
