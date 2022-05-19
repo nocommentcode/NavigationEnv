@@ -58,9 +58,9 @@ class NavigationEnv(gym.Env):
         return self._obs()
     
     def step(self, action):
-        assert self.action_space.contains(action)
-        
         action = np.rint(action) # discretise actions
+        
+        assert self.action_space.contains(action)
 
         action = action.astype("int") 
 
