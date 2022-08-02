@@ -1,25 +1,29 @@
 import gym
 import numpy as np
-import matplotlib.pyplot as plt
+
 
 class NavigationEnv(gym.Env):
     metadata = {"render.modes": ["human", "array"]}
 
-    def __init__(self, use_terminals=False, spawn_radius=2, max_ep_len=100, map_size=20):
+    def __init__(self, rewards, terminals, spawn_radius=2,
+                 spawn_center=(3 * 20 // 2, 3 * 20 // 2), max_ep_len=100, map_size=20, ):
         super().__init__()
+
         self.w = map_size
         self.h = map_size
 
         # create reward map
         self.rewards = np.zeros((self.w, self.h))
-        self.rewards[:map_size//2, 3*map_size//4:] = 1
-        self.rewards[:map_size//2, map_size//2:3*map_size//4] = -1
+        for s, r in rewards:
+            self.rewards[s] = r
 
         self.timestep_penalty = 0.01
 
         # create terminal map
         self.terminals = np.zeros((self.h, self.w))
-        self.terminals[:map_size//2, map_size//2:] = use_terminals
+        if terminals is not None:
+            for s, t in terminals:
+                self.terminals[s] = t
 
         self.max_ep_len = max_ep_len
         self.current_ep_len = 0
@@ -27,7 +31,7 @@ class NavigationEnv(gym.Env):
 
         self.player = None
         self.player_map = np.zeros((self.w, self.h))
-        self.spawn_center = (3 * map_size//2, 3 * map_size//2)
+        self.spawn_center = spawn_center
         self.spawn_radius = spawn_radius
 
         # channel 1: player location
@@ -90,7 +94,7 @@ class NavigationEnv(gym.Env):
 
     def _obs(self):
         return np.stack([self.player_map, self.rewards, self.terminals])
-    
+
     def render(self, mode="human", time=50):
         state = self._obs()
 
