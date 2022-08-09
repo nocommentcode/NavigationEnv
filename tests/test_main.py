@@ -62,7 +62,6 @@ def test_bad_actions(env_name):
     env.close()
 
 
-
 @pytest.mark.parametrize("env_name", terminal_env_names)
 def test_terminations(env_name):
     # ensures that we get correct termination and reward signals from terminal transitions
@@ -73,30 +72,30 @@ def test_terminations(env_name):
     _ = env.reset()
 
     # set player position to the right of a terminal position
-    
+
     # goal state
-    env.unwrapped.player = np.array([0, env.unwrapped.w // 2])  # one to the right of the goal state
+    env.unwrapped.player = np.array([0, (env.unwrapped.w // 2) - 1])  # one below the goal state
     env.unwrapped.player_map = np.zeros((env.unwrapped.h, env.unwrapped.w))
     env.unwrapped.player_map[env.unwrapped.player[0], env.unwrapped.player[1]] = 1
 
-    _, r, d, _ = env.step(np.array([0, -1]).astype("float32"))  # step left into reward
+    _, r, d, _ = env.step(np.array([0, 1]).astype("float32"))  # step up into negative reward
 
-    assert r == 1 - 0.01, "Incorrect reward from goal region"
+    assert r == -1 - 0.01, "Incorrect reward from goal region"
     assert d == 1, "incorrect done signal from goal region"
 
     env.reset()
 
     # terminal state
-    env.unwrapped.player = np.array([env.unwrapped.h // 2 - 1, env.unwrapped.w // 2])  # one to the right of the death state
+    env.unwrapped.player = np.array(
+        [env.unwrapped.h // 2, env.unwrapped.w - 1])  # one to the left of the goal state
     env.unwrapped.player_map = np.zeros((env.unwrapped.h, env.unwrapped.w))
     env.unwrapped.player_map[env.unwrapped.player[0], env.unwrapped.player[1]] = 1
 
-    _, r, d, _ = env.step(np.array([0, -1]).astype("float32"))  # step left into reward
+    _, r, d, _ = env.step(np.array([-1, 0]).astype("float32"))  # step right into reward
 
-    assert r == -1 - 0.01, "Incorrect reward from death region"
+    assert r == 1 - 0.01, "Incorrect reward from death region"
     assert d == 1, "incorrect done signal from death region"
-    
-    
+
     env.close()
 
 

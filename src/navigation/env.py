@@ -28,6 +28,7 @@ class NavigationEnv(gym.Env):
         self.max_ep_len = max_ep_len
         self.current_ep_len = 0
         self.ep_return = 0
+        self.current_trajectory = []
 
         self.player = None
         self.player_map = np.zeros((self.w, self.h))
@@ -48,6 +49,7 @@ class NavigationEnv(gym.Env):
     def reset(self):
         self.current_ep_len = 0
         self.ep_return = 0
+        self.current_trajectory = []
 
         random_shift_x = 2 * np.random.randint(self.spawn_radius + 1) - self.spawn_radius
         random_shift_y = 2 * np.random.randint(self.spawn_radius + 1) - self.spawn_radius
@@ -60,13 +62,17 @@ class NavigationEnv(gym.Env):
         self.player_map[self.player[0], self.player[1]] = 1
 
         return self._obs()
-    
+
+    def add_first_state_to_traj(self):
+        # render to store first state in trajectory
+        self.render(mode="rgb_array")
+
     def step(self, action):
-        action = np.rint(action) # discretise actions
-        
+        action = np.rint(action)  # discretise actions
+
         assert self.action_space.contains(action)
 
-        action = action.astype("int") 
+        action = action.astype("int")
 
         self.current_ep_len += 1
     
@@ -95,6 +101,9 @@ class NavigationEnv(gym.Env):
     def _obs(self):
         return np.stack([self.player_map, self.rewards, self.terminals])
 
+    def get_trajectory(self):
+        return [state.copy() for state in self.current_trajectory]
+
     def render(self, mode="human", time=50):
         state = self._obs()
 
@@ -105,20 +114,22 @@ class NavigationEnv(gym.Env):
                     # player
                     pixels[x, y] = np.array([255, 255, 255])  # white
 
-                elif state[1, x, y] == 1:
+                elif state[1, x, y] == 1 or state[1, x, y] == 10:
                     # rewards
                     pixels[x, y] = np.array([0, 255, 0])  # green
 
-                elif state[1, x, y] == -1:
+                elif state[1, x, y] == -1 or state[1, x, y] == -0.2 or state[1, x, y] == -0.05:
                     # bad reward
                     pixels[x, y, 0] = 255  # red
-        
+
+        self.current_trajectory.append(pixels)
+
         if mode == "human":
             if not self.visualized:
                 global plt
                 mpl = __import__('matplotlib.pyplot', globals(), locals())
                 plt = mpl.pyplot
-                _, self.ax = plt.subplots(1,1)
+                _, self.ax = plt.subplots(1, 1)
                 plt.show(block=False)
                 self.visualized = True
             if self.closed:
