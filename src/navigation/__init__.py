@@ -62,10 +62,14 @@ register(id="NavigationRandom-v0", entry_point="navigation.random_generated_env:
          kwargs=dict(map_size=10, spawn_radius=1, spawn_center=[1, 1], max_ep_len=700,
                      fixed_elements=[(numpy.index_exp[8:, 8:], 1, True)], random_elements=[(5, 4, -0.05, False)]))
 
+register(id="NavigationRandom-v1", entry_point="navigation.random_generated_env:RandomGenerationNavigationEnv",
+         kwargs=dict(map_size=10, spawn_radius=1, spawn_center=[1, 1], max_ep_len=700,
+                     fixed_elements=[(numpy.index_exp[8:, 8:], 1, True)], random_elements=[(5, 4, -1, False)]))
+
 if __name__ == "__main__":
     import gym
 
-    env = gym.make("NavigationRandom-v0")
+    env = gym.make("NavigationRandom-v1")
 
     for i in range(15):
         state = env.reset()
