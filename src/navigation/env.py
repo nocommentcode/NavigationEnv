@@ -99,7 +99,8 @@ class NavigationEnv(gym.Env):
         return self._obs(), r, d, info
 
     def _obs(self):
-        return np.stack([self.player_map, self.rewards, self.terminals])
+        # return np.stack([self.player_map, self.rewards, self.terminals])
+        return self.render(mode="rgb_array")
 
     def get_trajectory(self):
         return [state.copy() for state in self.current_trajectory]

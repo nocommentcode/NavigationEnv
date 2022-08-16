@@ -39,7 +39,7 @@ class RandomGenerationNavigationEnv(NavigationEnv):
     def reset(self):
         if not self.randomisation_locked:
             self.randomise_instance()
-        super().reset()
+        return super().reset()
 
     def randomise_instance(self):
         # clear terminals and rewards
