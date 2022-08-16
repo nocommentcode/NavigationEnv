@@ -61,7 +61,7 @@ class NavigationEnv(gym.Env):
         self.player_map = np.zeros((self.w, self.h))
         self.player_map[self.player[0], self.player[1]] = 1
 
-        return self._obs()
+        return self.render(mode="rgb_array")
 
     def add_first_state_to_traj(self):
         # render to store first state in trajectory
@@ -96,11 +96,11 @@ class NavigationEnv(gym.Env):
 
         self.ep_return += r
 
-        return self._obs(), r, d, info
+        return self.render(mode="rgb_array"), r, d, info
 
     def _obs(self):
-        # return np.stack([self.player_map, self.rewards, self.terminals])
-        return self.render(mode="rgb_array")
+        return np.stack([self.player_map, self.rewards, self.terminals])
+
 
     def get_trajectory(self):
         return [state.copy() for state in self.current_trajectory]
