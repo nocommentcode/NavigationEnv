@@ -144,7 +144,7 @@ class NavigationEnv(gym.Env):
             plt.cla()
         
         elif mode == "rgb_array":
-            return pixels
+            return np.moveaxis(pixels, -1, 0)
         
     def close_display(self):
         plt.close()
