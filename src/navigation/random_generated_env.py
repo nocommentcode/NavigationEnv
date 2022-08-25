@@ -58,14 +58,14 @@ class RandomGenerationNavigationEnv(NavigationEnv):
 
             while not found_bottom_corner:
                 # randomly select bottom left corner
-                corner = np.random.randint([0, 0], [self.w - w, self.h - h], (2))
+                corner = np.random.randint([0, 0], [self.w  - w +1 , self.h - h+1], (2))
 
                 # ensure no collision with other elements
                 collision_occured = False
-                for x in range(w + 1):
-                    for y in range(h + 1):
-                        if not self.terminals[corner[0] + x, corner[1] + y] == 0 and self.rewards[
-                            corner[0] + x, corner[1] + y] == 0:
+                for x in range(w):
+                    for y in range(h):
+                        if not (self.terminals[corner[0] + x, corner[1] + y] == 0 and self.rewards[
+                            corner[0] + x, corner[1] + y] == 0):
                             collision_occured = True
 
                 found_bottom_corner = not collision_occured

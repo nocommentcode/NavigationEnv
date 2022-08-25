@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
     env = gym.make("NavigationRandom-v1")
 
-    for i in range(15):
+    for i in range(70):
         state = env.reset()
         done = False
         i = 0
@@ -80,5 +80,5 @@ if __name__ == "__main__":
             state, reward, done, info = env.step(action)
             env.render()
             i += 1
-            if i > 10:
+            if i > 4:
                 break
