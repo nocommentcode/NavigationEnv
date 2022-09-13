@@ -56,7 +56,7 @@ register(id="Navigation-v2", entry_point="navigation.env:NavigationEnv",
 register(id="Navigation-v3", entry_point="navigation.env:NavigationEnv",
          kwargs=dict(map_size=10, terminals=[(numpy.index_exp[8:, 8:], True)], spawn_radius=1, spawn_center=[1, 1],
                      max_ep_len=700,
-                     rewards=[(numpy.index_exp[8:, 8:], 1), ((numpy.index_exp[3:8, 3:7], -0.05))]))
+                     rewards=[(numpy.index_exp[8:, 8:], 1), ((numpy.index_exp[3:8, 3:7], -1))]))
 
 register(id="NavigationRandom-v0", entry_point="navigation.random_generated_env:RandomGenerationNavigationEnv",
          kwargs=dict(map_size=10, spawn_radius=1, spawn_center=[1, 1], max_ep_len=700,
@@ -73,7 +73,7 @@ register(id="NavigationRandom-v2", entry_point="navigation.random_generated_env:
 if __name__ == "__main__":
     import gym
 
-    env = gym.make("NavigationRandom-v2")
+    env = gym.make("Navigation-v2")
 
     for i in range(70):
         state = env.reset()
@@ -84,5 +84,5 @@ if __name__ == "__main__":
             state, reward, done, info = env.step(action)
             env.render()
             i += 1
-            if i > 4:
-                break
+            # if i > 4:
+            #     break

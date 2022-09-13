@@ -54,12 +54,22 @@ class NavigationEnv(gym.Env):
         random_shift_x = 2 * np.random.randint(self.spawn_radius + 1) - self.spawn_radius
         random_shift_y = 2 * np.random.randint(self.spawn_radius + 1) - self.spawn_radius
 
-        self.player = np.array([self.spawn_center[0] + random_shift_x, self.spawn_center[1] + random_shift_y])
-        self.player[0] = np.clip(self.player[0], 0, self.w - 1)
-        self.player[1] = np.clip(self.player[1], 0, self.h - 1)
+        spawn = np.random.randint([0, 0], [self.h, self.w], (2))
+        while self.terminals[spawn[0], spawn[1]]:
+            spawn = np.random.randint([0, 0], [self.h, self.w], (2))
 
-        self.player_map = np.zeros((self.w, self.h))
+        # set spawn
+        self.player = spawn.copy()
+        self.player_map = np.zeros((self.h, self.w))
         self.player_map[self.player[0], self.player[1]] = 1
+
+        #
+        # self.player = np.array([self.spawn_center[0] + random_shift_x, self.spawn_center[1] + random_shift_y])
+        # self.player[0] = np.clip(self.player[0], 0, self.w - 1)
+        # self.player[1] = np.clip(self.player[1], 0, self.h - 1)
+        #
+        # self.player_map = np.zeros((self.w, self.h))
+        # self.player_map[self.player[0], self.player[1]] = 1
 
         return self.render(mode="rgb_array")
 
