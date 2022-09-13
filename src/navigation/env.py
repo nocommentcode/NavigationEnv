@@ -38,7 +38,7 @@ class NavigationEnv(gym.Env):
         # channel 1: player location
         # channel 2: terminal map
         # channel 3: reward map
-        self.observation_space = gym.spaces.Box(0.0, 1.0, shape=(3, self.w, self.h))
+        self.observation_space = gym.spaces.Box(0, 255, shape=(3, self.w, self.h),dtype=np.uint8)
 
         self.action_space = gym.spaces.Box(-1.0, 1.0, shape=(2,))
 
@@ -144,7 +144,7 @@ class NavigationEnv(gym.Env):
             plt.cla()
         
         elif mode == "rgb_array":
-            return np.moveaxis(pixels, -1, 0)
+            return np.moveaxis(pixels, -1, 0).astype(np.uint8)
         
     def close_display(self):
         plt.close()
